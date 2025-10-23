@@ -1,0 +1,131 @@
+:root {
+  --bg: #0b1020;
+  --panel: #121a33;
+  --text: #e9eefc;
+  --muted: #a7b0d1;
+  --accent: #6ea8fe;
+  --ghost: #2a355f;
+  --border: #253058;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+  background: linear-gradient(180deg, #0b1020, #0d1330 30%, #0b1020);
+  color: var(--text);
+}
+
+header { padding: 20px 24px 6px; border-bottom: 1px solid var(--border); }
+header h1 { margin: 0; font-size: 20px; letter-spacing: 0.4px; }
+header .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+.tabs { display: flex; gap: 8px; padding: 12px 24px; border-bottom: 1px solid var(--border); }
+.tab {
+  background: #0f1834; color: var(--text); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: 10px; cursor: pointer;
+}
+.tab.active { background: var(--accent); color: #0b1020; border-color: transparent; font-weight: 700; }
+
+section#selectors {
+  display: grid; gap: 12px; padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.selector { display: inline-flex; align-items: center; gap: 8px; margin-right: 16px; }
+.selector label { color: var(--muted); font-size: 13px; }
+.selector select {
+  background: #0e1630; color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px;
+}
+
+main { padding: 16px 16px 24px; }
+.panel { display: none; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.panel.active { display: block; }
+.plot { width: 100%; height: 540px; }
+.twocol { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
+
+table { width: 100%; border-collapse: collapse; background: #0e1630; border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
+th { text-align: left; color: var(--muted); }
+tbody tr:last-child td { border-bottom: none; }
+
+.hint { margin-top: 6px; color: var(--muted); font-size: 12px; }
+
+footer {
+  padding: 14px 24px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border);
+}
+
+/* Start panel cards */
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: #0e1630;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.card h3 { margin: 0 0 8px; }
+.card .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+.card button {
+  background: var(--accent); border: none; color: #0b1020;
+  padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+.card .ghost { background: var(--ghost); color: #cbd5ff; }
+.card .muted { color: var(--muted); }
+.card.tips ul { margin: 8px 0 0 16px; padding: 0; }
+
+/* Image panels */
+.img-wrap {
+  display: grid; gap: 8px; justify-items: center;
+  background: #0e1630; border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px; min-height: 300px;
+}
+.img-wrap img {
+  max-width: 100%; max-height: 70vh; object-fit: contain;
+  border-radius: 8px; border: 1px solid #1a2346; background: #0b1020;
+}
+.img-caption {
+  font-size: 12px; color: var(--muted); text-align: center; word-break: break-all;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 25, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+.loading-overlay.show { display: flex; }
+.loading-card {
+  width: min(520px, 90vw);
+  background: #0f1834;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+.loading-title { font-weight: 700; margin-bottom: 8px; }
+.loading-bar-wrap {
+  height: 10px;
+  background: #0e1630;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 8px 0 6px;
+}
+.loading-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--accent);
+  transition: width 160ms linear;
+}
+.loading-msg { color: var(--muted); font-size: 13px; }

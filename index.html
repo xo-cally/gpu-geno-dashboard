@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GPU-Accelerated Genotyping Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>GPU-Accelerated Genotyping Dashboard</h1>
+    <div class="sub">Cohort calls and cluster PNGs (K=1..3)</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="start">Start</button>
+    <button class="tab" data-tab="summary">Cohort calls</button>
+    <button class="tab" data-tab="k1">Cluster image: K=1</button>
+    <button class="tab" data-tab="k2">Cluster image: K=2</button>
+    <button class="tab" data-tab="k3">Cluster image: K=3</button>
+  </nav>
+
+  <section id="selectors">
+    <div class="selector" id="snpSelector" style="display:none;">
+      <label for="snpSelect">SNP:</label>
+      <select id="snpSelect"></select>
+    </div>
+  </section>
+
+  <main>
+    <!-- START PANEL -->
+    <div class="panel active" id="panel-start">
+      <div class="start-grid">
+        <div class="card">
+          <h3>1) Load Cohort Calls</h3>
+          <p>CSV can be <em>long</em> (<code>label,count</code>) or a <em>wide matrix</em> with AA/AB/BB/NoCall values in cells.</p>
+          <div class="row">
+            <input id="summaryFile" type="file" accept=".csv" />
+            <button id="loadSummaryBtn">Load</button>
+          </div>
+          <div class="row">
+            <button id="loadDefaultSummaryBtn" class="ghost">Load from <code>data/cohort_calls.csv</code></button>
+          </div>
+          <small class="muted">We’ll compute total AA/AB/BB/NoCall across your cohort.</small>
+        </div>
+
+        <div class="card">
+          <h3>2) Load Cluster PNGs</h3>
+          <p>Filenames like <code>SNP123_k1.png</code>, <code>rs42-k2.png</code>, or <code>rs7.k3.png</code>.</p>
+          <div class="row">
+            <input id="clustersDir" type="file" accept="image/png" webkitdirectory multiple />
+            <input id="clustersMany" type="file" accept="image/png" multiple />
+          </div>
+          <div class="row">
+            <button id="loadClustersPngBtn">Load</button>
+            <button id="clearClustersBtn" class="ghost">Clear</button>
+          </div>
+          <small class="muted">K tabs will only list SNPs that have an image for that K.</small>
+        </div>
+
+        <div class="card tips">
+          <h3>Tips</h3>
+          <ul>
+            <li>Switch to <strong>Cohort calls</strong> to see the pie & counts after loading.</li>
+            <li>Open <strong>K=1/2/3</strong> tabs to view your cluster images.</li>
+            <li>The <strong>SNP</strong> dropdown appears only on K tabs and is filtered to relevant SNPs.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY PANEL -->
+    <div class="panel" id="panel-summary">
+      <div class="twocol">
+        <div id="summaryPie" class="plot"></div>
+        <div>
+          <table id="summaryTable">
+            <thead><tr><th>Genotype</th><th>Count</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="hint">Auto-detects: (1) long <code>label,count</code> OR (2) wide matrix with AA/AB/BB/NoCall in cells.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- K PANELS -->
+    <div class="panel" id="panel-k1">
+      <div class="img-wrap">
+        <img id="imgK1" alt="K=1 cluster image" />
+        <div id="imgK1Caption" class="img-caption"></div>
+      </div>
+      <div class="hint">SNP dropdown only lists SNPs that have a K=1 PNG loaded.</div>
+    </div>
+
+    <div class="panel" id="panel-k2">
+      <div class="img-wrap">
+        <img id="imgK2" alt="K=2 cluster image" />
+        <div id="imgK2Caption" class="img-caption"></div>
+      </div>
+      <div class="hint">SNP dropdown only lists SNPs that have a K=2 PNG loaded.</div>
+    </div>
+
+    <div class="panel" id="panel-k3">
+      <div class="img-wrap">
+        <img id="imgK3" alt="K=3 cluster image" />
+        <div id="imgK3Caption" class="img-caption"></div>
+      </div>
+      <div class="hint">SNP dropdown only lists SNPs that have a K=3 PNG loaded.</div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Built for 25G15’s GPU genotyping project • Static dashboard</span>
+  </footer>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+    <div class="loading-card">
+      <div id="loadingTitle" class="loading-title">Loading…</div>
+      <div class="loading-bar-wrap">
+        <div id="loadingBar" class="loading-bar"></div>
+      </div>
+      <div id="loadingMsg" class="loading-msg">Please wait</div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
